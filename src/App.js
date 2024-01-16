@@ -1,28 +1,62 @@
+// App.js
 import React, { useState } from 'react';
 import './App.css';  // Você pode remover isso se não estiver usando estilos
+import AddTaskPage from './AddTaskPage';
+import CompleteTaskPage from './CompleteTaskPage';
 
 function App() {
-  const tasks = ['Tarefa 1', 'Tarefa 2', 'Tarefa 3'];  // Adicione suas tarefas aqui
+  const [currentPage, setCurrentPage] = useState('addTask');
+  const [tasks, setTasks] = useState([]);
+  const [completedTasks, setCompletedTasks] = useState([]);
   const [currentTaskIndex, setCurrentTaskIndex] = useState(0);
 
-  const handleNextTask = () => {
-    setCurrentTaskIndex((prevIndex) => (prevIndex + 1) % tasks.length);
+  const handleAddTask = (newTask) => {
+    setTasks([...tasks, newTask]);
+  };
+
+  const handleCompleteTask = () => {
+    const completedTask = tasks[currentTaskIndex];
+    setCompletedTasks([...completedTasks, completedTask]);
+    setTasks(tasks.filter((_, index) => index !== currentTaskIndex));
+    setCurrentTaskIndex(0);
+
+    if (tasks.length === 1) {
+      setCurrentPage('showCompletedTasks');
+    }
   };
 
   return (
     <div className="App">
-      <h1>Minha Lista To-Do</h1>
-      {tasks.length > 0 ? (
+      {currentPage === 'addTask' && (
+        <AddTaskPage onAddTask={handleAddTask} />
+      )}
+
+      {currentPage === 'completeTask' && (
+        <CompleteTaskPage
+          currentTask={tasks[currentTaskIndex]}
+          onCompleteTask={handleCompleteTask}
+        />
+      )}
+
+      {currentPage === 'showCompletedTasks' && (
         <div>
-          <p>Tarefa atual: {tasks[currentTaskIndex]}</p>
-          <button onClick={handleNextTask}>Próxima Tarefa</button>
+          <h1>Todas as Tarefas Concluídas</h1>
+          <ul>
+            {completedTasks.map((task, index) => (
+              <li key={index}>{task}</li>
+            ))}
+          </ul>
         </div>
-      ) : (
-        <p>Nenhuma tarefa disponível.</p>
+      )}
+
+      {(currentPage === 'addTask' || currentPage === 'completeTask') && (
+        <div>
+          <button onClick={() => setCurrentPage('addTask')}>Adicionar Tarefas</button>
+          <button onClick={() => setCurrentPage('completeTask')}>Marcar Concluídas</button>
+        </div>
       )}
     </div>
   );
 }
 
 export default App;
-
