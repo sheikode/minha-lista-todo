@@ -46,13 +46,19 @@ function App() {
               <li key={index}>{task}</li>
             ))}
           </ul>
+          <button onClick={() => setCurrentPage('addTask')}>Voltar para Adicionar Tarefa</button>
         </div>
       )}
 
-      {(currentPage === 'addTask' || currentPage === 'completeTask') && (
+      {currentPage === 'addTask' && (
         <div>
-          <button onClick={() => setCurrentPage('addTask')}>Adicionar Tarefas</button>
           <button onClick={() => setCurrentPage('completeTask')}>Marcar Concluídas</button>
+        </div>
+      )}
+
+      {currentPage === 'completeTask' && (
+        <div>
+          <button onClick={() => setCurrentPage('addTask')}>Adicionar Tarefa</button>
         </div>
       )}
     </div>
