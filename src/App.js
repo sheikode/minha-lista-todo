@@ -1,6 +1,6 @@
 // App.js
 import React, { useState } from 'react';
-import './App.css';  // Você pode remover isso se não estiver usando estilos
+import './App.css';
 import AddTaskPage from './AddTaskPage';
 import CompleteTaskPage from './CompleteTaskPage';
 
@@ -59,6 +59,7 @@ function App() {
       {currentPage === 'completeTask' && (
         <div>
           <button onClick={() => setCurrentPage('addTask')}>Adicionar Tarefa</button>
+          <button onClick={handleCompleteTask}>Marcar Concluída</button>
         </div>
       )}
     </div>
